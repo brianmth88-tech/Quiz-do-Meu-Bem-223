@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)file:///C:/Users/Brian/Downloads/index_2.html -->
+<html lang="pt-br"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz da Lívia ❤️</title>
+<link href="./Index_files/css2" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--rosa:#e8789a;--rosa-escuro:#c2547a;--fundo:#1a0a10;--texto:#fff}
+body{font-family:'Lato',sans-serif;background:var(--fundo);color:var(--texto);min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.coracoes{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.coracao{position:absolute;bottom:-60px;opacity:0;animation:subir linear infinite}
+@keyframes subir{0%{transform:translateY(0) rotate(0deg);opacity:0.6}50%{opacity:0.4}100%{transform:translateY(-110vh) rotate(20deg);opacity:0}}
+.tela{display:none;flex-direction:column;align-items:center;text-align:center;padding:32px 20px;gap:18px;z-index:1;max-width:560px;width:100%;animation:aparecer 0.5s ease}
+.tela.ativa{display:flex}
+@keyframes aparecer{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+h1{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,5vw,2.2rem);color:var(--rosa);line-height:1.3}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,4vw,1.6rem);color:var(--rosa);line-height:1.4}
+p{font-size:0.97rem;line-height:1.7;color:#f0d0da;max-width:480px}
+input[type="text"],input[type="password"],input[type="number"]{background:rgba(255,255,255,0.07);border:1.5px solid var(--rosa);border-radius:40px;padding:13px 22px;color:white;font-size:1.05rem;text-align:center;width:260px;outline:none;transition:border-color 0.3s,box-shadow 0.3s;font-family:'Lato',sans-serif}
+input:focus{border-color:white;box-shadow:0 0 0 3px rgba(232,120,154,0.3)}
+input::placeholder{color:rgba(255,255,255,0.35)}
+.btn{background:var(--rosa);color:white;border:none;border-radius:40px;padding:13px 34px;font-size:0.97rem;font-family:'Lato',sans-serif;cursor:pointer;transition:background 0.2s,transform 0.1s;letter-spacing:0.5px}
+.btn:hover{background:var(--rosa-escuro);transform:scale(1.03)}
+.btn:active{transform:scale(0.97)}
+.btn-dica{background:transparent;border:1.5px solid rgba(232,120,154,0.5);color:var(--rosa);border-radius:40px;padding:9px 22px;font-size:0.83rem;font-family:'Lato',sans-serif;cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.2s}
+.btn-dica:hover{border-color:var(--rosa);background:rgba(232,120,154,0.1)}
+.balao-dica{background:rgba(232,120,154,0.15);border:1px solid rgba(232,120,154,0.4);border-radius:16px;padding:13px 18px;font-size:0.93rem;color:#f0d0da;max-width:320px;display:none;animation:aparecer 0.3s ease}
+.balao-dica.visivel{display:block}
+.erro{color:#ff8fa8;font-size:0.88rem;min-height:20px}
+.card-pergunta{background:rgba(255,255,255,0.05);border:1px solid rgba(232,120,154,0.3);border-radius:20px;padding:26px 22px;max-width:500px;width:100%;gap:14px;display:flex;flex-direction:column;align-items:center}
+.numero-pergunta{font-size:0.78rem;letter-spacing:2px;color:var(--rosa);text-transform:uppercase}
+.progresso{display:flex;gap:8px;margin-bottom:4px}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.15);transition:background 0.3s}
+.dot.ativo{background:var(--rosa)}
+.dot.feito{background:rgba(232,120,154,0.5)}
+/* REVELAÇÃO */
+.revelacao{display:none;flex-direction:column;align-items:center;gap:16px;width:100%;animation:aparecer 0.6s ease}
+.revelacao.visivel{display:flex}
+.foto-placeholder-rev{width:100%;max-width:380px;min-height:200px;background:rgba(255,255,255,0.07);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed rgba(232,120,154,0.4);color:rgba(255,255,255,0.4);font-size:0.83rem;gap:8px}
+.foto-revelada{width:100%;max-width:380px;border-radius:16px;object-fit:cover;border:2px solid rgba(232,120,154,0.5)}
+.fotos-reveladas{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;width:100%;max-width:380px}
+.fotos-reveladas img{width:calc(50% - 4px);border-radius:12px;object-fit:cover;border:2px solid rgba(232,120,154,0.5);aspect-ratio:1}
+.texto-historia{font-size:0.88rem;line-height:1.75;color:#e8c0cc;text-align:left;max-width:440px;width:100%;background:rgba(255,255,255,0.04);border-left:3px solid var(--rosa);padding:12px 16px;border-radius:0 10px 10px 0;font-style:italic}
+.emoji-big{font-size:clamp(2.4rem,7vw,3.5rem)}
+.parabens-texto{font-family:'Playfair Display',serif;font-size:clamp(1rem,3.5vw,1.4rem);color:#f0d0da;font-style:italic;line-height:1.7;max-width:460px}
+/* FINAL */
+#tela-final{padding-top:20px}
+.titulo-final{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,4vw,1.9rem);color:var(--rosa)}
+.fileiras-fotos{width:100vw;display:flex;flex-direction:column;gap:10px;overflow:hidden;margin-left:calc(-50vw + 50%)}
+.fileira{display:flex;gap:10px;width:max-content}
+.fileira-1{animation:rolarEsq 30s linear infinite}
+.fileira-2{animation:rolarDir 35s linear infinite}
+.fileira-3{animation:rolarEsq 28s linear infinite}
+@keyframes rolarEsq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes rolarDir{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}
+.foto-slide{width:130px;height:130px;object-fit:cover;border-radius:14px;border:2px solid rgba(232,120,154,0.4);flex-shrink:0}
+.placeholder-slide{width:130px;height:130px;background:rgba(255,255,255,0.07);border-radius:14px;border:2px dashed rgba(232,120,154,0.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:rgba(255,255,255,0.3);text-align:center;padding:8px}
+.btn-carta{margin-top:12px;background:transparent;border:2px solid var(--rosa);color:var(--rosa);border-radius:40px;padding:13px 30px;font-size:0.97rem;font-family:'Playfair Display',serif;font-style:italic;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;gap:10px}
+.btn-carta:hover{background:rgba(232,120,154,0.15)}
+.carta-overlay{position:fixed;inset:0;background:rgba(10,2,5,0.88);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.carta-overlay.visivel{display:flex;animation:aparecer 0.4s ease}
+.carta-papel{background:#fff9f5;color:#3a1a25;border-radius:4px;max-width:500px;width:100%;max-height:85vh;overflow-y:auto;padding:44px 38px;position:relative;box-shadow:0 30px 80px rgba(0,0,0,0.5);font-family:'Playfair Display',serif}
+.carta-papel::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:repeating-linear-gradient(90deg,var(--rosa) 0,var(--rosa) 8px,transparent 8px,transparent 16px)}
+.carta-fecha{position:absolute;top:12px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#c2547a}
+.carta-titulo{font-size:1.35rem;color:var(--rosa-escuro);margin-bottom:18px;text-align:center}
+.carta-corpo{font-size:0.97rem;line-height:1.9;color:#3a1a25}
+.carta-corpo p{margin-bottom:14px}
+.carta-assinatura{margin-top:22px;text-align:right;font-style:italic;color:var(--rosa-escuro)}
+@media(max-width:480px){.carta-papel{padding:34px 20px}.fotos-reveladas img{width:100%}}
+</style>
+</head>
+<body>
+<div class="coracoes" id="coracoes"><div class="coracao" style="left: 4.20418%; font-size: 15.3345px; animation-duration: 9.58535s; animation-delay: 2.36953s;">🩷</div><div class="coracao" style="left: 28.52%; font-size: 15.7101px; animation-duration: 15.5366s; animation-delay: 7.65786s;">🤍</div><div class="coracao" style="left: 35.1163%; font-size: 29.5844px; animation-duration: 11.5515s; animation-delay: 8.85805s;">💗</div><div class="coracao" style="left: 7.56724%; font-size: 16.7682px; animation-duration: 8.49812s; animation-delay: 5.9968s;">💓</div><div class="coracao" style="left: 99.2379%; font-size: 18.266px; animation-duration: 17.5833s; animation-delay: 1.56122s;">💕</div><div class="coracao" style="left: 20.9372%; font-size: 12.2268px; animation-duration: 14.284s; animation-delay: 9.00484s;">🩷</div><div class="coracao" style="left: 44.5534%; font-size: 12.6421px; animation-duration: 17.5892s; animation-delay: 0.819456s;">❤️</div><div class="coracao" style="left: 49.0446%; font-size: 28.75px; animation-duration: 10.5351s; animation-delay: 4.59706s;">🩷</div><div class="coracao" style="left: 27.9568%; font-size: 15.3917px; animation-duration: 14.593s; animation-delay: 4.62301s;">💕</div><div class="coracao" style="left: 29.8665%; font-size: 27.5196px; animation-duration: 14.9923s; animation-delay: 1.01481s;">💕</div><div class="coracao" style="left: 94.901%; font-size: 15.6992px; animation-duration: 17.2898s; animation-delay: 5.61362s;">❤️</div><div class="coracao" style="left: 4.2335%; font-size: 27.7131px; animation-duration: 16.3885s; animation-delay: 2.49256s;">💕</div><div class="coracao" style="left: 46.2497%; font-size: 20.9738px; animation-duration: 8.48012s; animation-delay: 1.37277s;">💕</div><div class="coracao" style="left: 65.7824%; font-size: 19.5173px; animation-duration: 9.88522s; animation-delay: 6.16597s;">💓</div><div class="coracao" style="left: 92.7588%; font-size: 12.6753px; animation-duration: 19.4049s; animation-delay: 6.9468s;">❤️</div><div class="coracao" style="left: 52.9738%; font-size: 20.2285px; animation-duration: 17.0366s; animation-delay: 5.27864s;">💓</div><div class="coracao" style="left: 23.6906%; font-size: 13.3706px; animation-duration: 14.1724s; animation-delay: 1.03704s;">🩷</div><div class="coracao" style="left: 33.8413%; font-size: 15.7766px; animation-duration: 15.6849s; animation-delay: 0.169806s;">💖</div><div class="coracao" style="left: 12.6003%; font-size: 21.609px; animation-duration: 17.1569s; animation-delay: 9.88371s;">💓</div><div class="coracao" style="left: 11.4399%; font-size: 18.4852px; animation-duration: 14.5991s; animation-delay: 6.6528s;">💗</div><div class="coracao" style="left: 13.8159%; font-size: 23.7656px; animation-duration: 14.3065s; animation-delay: 9.08036s;">💕</div><div class="coracao" style="left: 65.5128%; font-size: 17.7432px; animation-duration: 14.1526s; animation-delay: 4.55195s;">💗</div></div>
+
+<!-- TELA 1: PRIMEIRA SENHA -->
+<div class="tela ativa" id="tela-senha1">
+  <div class="emoji-big">🔒</div>
+  <h1>Digite a senha</h1>
+  <input type="password" id="inp-s1" placeholder="••••••" maxlength="10" onkeydown="if(event.key===&#39;Enter&#39;)checarS1()">
+  <div class="erro" id="erro-s1"></div>
+  <button class="btn" onclick="checarS1()">Entrar ❤️</button>
+  <button class="btn-dica" onclick="toggleDica(&#39;dica1&#39;)">❓ Dica</button>
+  <div class="balao-dica" id="dica1">Lembra da minha senha? kkk 📱</div>
+</div>
+
+<!-- TELA 2: SEGUNDA SENHA -->
+<div class="tela" id="tela-senha2">
+  <div class="emoji-big">🔓</div>
+  <h1>Outra senha agora kkk</h1>
+  <p>Tá quase... mais uma!</p>
+  <input type="password" id="inp-s2" placeholder="••••" maxlength="6" onkeydown="if(event.key===&#39;Enter&#39;)checarS2()">
+  <div class="erro" id="erro-s2"></div>
+  <button class="btn" onclick="checarS2()">Entrar ❤️</button>
+  <button class="btn-dica" onclick="toggleDica(&#39;dica2&#39;)">❓ Dica</button>
+  <div class="balao-dica" id="dica2">Agora é a sua senha 😏</div>
+</div>
+
+<!-- TELA 3: PARABÉNS SENHA -->
+<div class="tela" id="tela-parabens-senha">
+  <div class="emoji-big">🎉</div>
+  <h1>Parabéns, oc conseguiu lembrar!</h1>
+  <p class="parabens-texto">Meu esquecimento não passou pra você dessa vez kkk</p>
+  <button class="btn" onclick="irPara(&#39;tela-p1&#39;)">Continuar... se tiver coragem 😈</button>
+</div>
+
+<!-- PERGUNTA 1 -->
+<div class="tela" id="tela-p1">
+  <div class="progresso">
+    <div class="dot ativo"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="card-pergunta" id="card-p1">
+    <span class="numero-pergunta">Pergunta 1 de 5</span>
+    <h2>Qual foi a data da nossa primeira mensagem? 💬</h2>
+    <p style="font-size:0.88rem;color:#e8c0cc">Ex: 01 de Janeiro</p>
+    <input type="text" id="inp-p1" placeholder="Sua resposta..." onkeydown="if(event.key===&#39;Enter&#39;)checarP(1)">
+    <div class="erro" id="erro-p1"></div>
+    <button class="btn" onclick="checarP(1)">Responder</button>
+  </div>
+  <div class="revelacao" id="rev-p1">
+    <!-- FOTO P1: substitua pelo seu <img src="..."> -->
+    <div class="foto-placeholder-rev"><img src="pergunta1.png"></div>
+    <!-- TEXTO P1: substitua pelo seu texto -->
+    <div class="texto-historia">Uma simples reação a uma nota no Instagram deu início a horas de conversa. Logo de cara, notei o seu jeito meigo e a sua energia contagiante. As conversas fluíam tão bem que eu perdia a noção das horas e dos dias. Falamos sobre tudo: desde o seu 'azar' até política e fofocas cotidianas. Qualquer assunto ao seu lado se tornava especial, e foi essa nossa conexão que me fez apaixonar por você. ❤️</div>
+    <button class="btn" onclick="irParaProxima(1)">Próxima pergunta ➜</button>
+  </div>
+</div>
+
+<!-- PERGUNTA 2 -->
+<div class="tela" id="tela-p2">
+  <div class="progresso">
+    <div class="dot feito"></div><div class="dot ativo"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="card-pergunta" id="card-p2">
+    <span class="numero-pergunta">Pergunta 2 de 5</span>
+    <h2>Onde foi a primeira vez que a gente se viu? 👀</h2>
+    <p style="font-size:0.88rem;color:#e8c0cc">Nome do lugar</p>
+    <input type="text" id="inp-p2" placeholder="Sua resposta..." onkeydown="if(event.key===&#39;Enter&#39;)checarP(2)">
+    <div class="erro" id="erro-p2"></div>
+    <button class="btn" onclick="checarP(2)">Responder</button>
+  </div>
+  <div class="revelacao" id="rev-p2">
+    <!-- FOTO P2: substitua pelo seu <img> ou <div class="fotos-reveladas"><img>...<img></div> -->
+    <div class="foto-placeholder-rev"><img src="pergunta2.png"></div>
+    <!-- TEXTO P2 -->
+    <div class="texto-historia">Foi aqui que nos encontramos pela primeira vez. Lembro-me até hoje daquele frio na barriga ao caminhar em sua direção; aquele corredor parecia uma maratona até eu finalmente te alcançar. Eu não sabia se desviava o olhar ou se admirava a mulher linda que estava na minha frente. Quando cheguei ao seu lado e vi que você era ainda mais bonita pessoalmente, pude experimentar o que os livros de romance chamam de paixão à primeira vista. Isso só se reforçou com o tempo que passamos naquele shopping, julgando as pessoas ao redor enquanto esperávamos o lanche kkk. a primeira vez que segurei sua mão no cinema, o nosso primeiro beijo na hora da despedida e até o momento em que te acompanhei ao centro porque meu celular descarregou kkk. Em todos esses momentos, eu vivi a tão falada paixão.❤️</div>
+    <button class="btn" onclick="irParaProxima(2)">Próxima pergunta ➜</button>
+  </div>
+</div>
+
+<!-- PERGUNTA 3 -->
+<div class="tela" id="tela-p3">
+  <div class="progresso">
+    <div class="dot feito"></div><div class="dot feito"></div><div class="dot ativo"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="card-pergunta" id="card-p3">
+    <span class="numero-pergunta">Pergunta 3 de 5</span>
+    <h2>Quantas rosas tinha o seu primeiro buquê? 🌹</h2>
+    <p style="font-size:0.88rem;color:#e8c0cc">Só o número mesmo 😄</p>
+    <input type="number" id="inp-p3" placeholder="Número..." min="1" max="100" onkeydown="if(event.key===&#39;Enter&#39;)checarP(3)">
+    <div class="erro" id="erro-p3"></div>
+    <button class="btn" onclick="checarP(3)">Responder</button>
+  </div>
+  <div class="revelacao" id="rev-p3">
+    <!-- FOTO P3 -->
+    <div class="foto-placeholder-rev"><img src="pergunta3.png"></div>
+    <!-- TEXTO P3 -->
+    <div class="texto-historia">Eu me lembro de quando você falou o quanto aquele buquê era importante para você, por ter sido o primeiro que recebeu. Fico muito feliz porque, de certa forma, foi o meu primeiro também; a primeira vez que entreguei flores a alguém. Cresci ouvindo que flores se dão a mulheres especiais e, graças a Deus, encontrei a minha. Ainda lembro da ansiedade até o buquê chegar à sua casa. Perguntas como 'Será que ela vai gostar?' ou 'Será que estou sendo emocionado demais?' não saíam da minha cabeça kkk. Mas, no fim, deu tudo certo... Você não só gostou, como hoje tem uma aliança no dedo!E se ser 'emocionado' me trouxe até você, então para mim foi ótimo! 😁 ❤️</div>
+    <button class="btn" onclick="irParaProxima(3)">Próxima pergunta ➜</button>
+  </div>
+</div>
+
+<!-- PERGUNTA 4 -->
+<div class="tela" id="tela-p4">
+  <div class="progresso">
+    <div class="dot feito"></div><div class="dot feito"></div><div class="dot feito"></div><div class="dot ativo"></div><div class="dot"></div>
+  </div>
+  <div class="card-pergunta" id="card-p4">
+    <span class="numero-pergunta">Pergunta 4 de 5</span>
+    <h2>Qual a data que eu pedi você em namoro? 💍</h2>
+    <p style="font-size:0.88rem;color:#e8c0cc">Data completa (ex: 01 de janeiro)</p>
+    <input type="text" id="inp-p4" placeholder="Sua resposta..." onkeydown="if(event.key===&#39;Enter&#39;)checarP(4)">
+    <div class="erro" id="erro-p4"></div>
+    <button class="btn" onclick="checarP(4)">Responder</button>
+  </div>
+  <div class="revelacao" id="rev-p4">
+    <!-- FOTO P4 -->
+    <div class="foto-placeholder-rev"><img src="Pergunta4.png"></div>
+    <!-- TEXTO P4 -->
+    <div class="texto-historia">Esse foi o dia que eu te pedi em namoro, ahhh que dia kkk! Eu já tinha planejado tudo duas semanas antes de te pedir.
+          Minha intenção era te pedir dia 31 de janeiro, e foi logo a semana que não deu para você ir lá em casa. Depois foram mais duas semanas que, por algum motivo, nunca dava certo o dia de pedir sua mão. Então chegou dia 15 e finalmente chegamos nos finalmentes kkkk!
+          Eu lembro que quando você entrou na porta de casa, eu já comecei a suar frio pensando em como você reagiria. Então eu sentei na beirada do sofá e fiquei lá te enrolando e enrolando... kkkk. E nós conversamos de tudo e mais um pouco enquanto as velas que eu tinha acendido lá no quarto se apagavam, e eu lá na sala te enrolando kkkk.
+          E quando eu criei coragem, a gente entrou no quarto com as velas já apagadas, nos 45 do segundo tempo para subir para a casa da minha mãe. E então você me abraça e não me diz nada; aquele abraço... No momento em que eu senti aquele abraço, veio um alívio junto. Não conseguia sentir mais nada senão felicidade. Ainda perguntei se aquele abraço era um "sim", vai que, né? Akkak. E, para minha sorte, era um sim!
+          Um sim que tem 89 dias que eu fico feliz por ter escutado e que eu continue feliz por esse sim amanhã, depois de amanhã, daqui a 3 dias, 1 semana, 1 mês, 1 ano, 10 anos e enquanto você estiver do meu lado...</div>
+    <button class="btn" onclick="irParaProxima(4)">Última pergunta ➜</button>
+  </div>
+</div>
+
+<!-- PERGUNTA 5 -->
+<div class="tela" id="tela-p5">
+  <div class="progresso">
+    <div class="dot feito"></div><div class="dot feito"></div><div class="dot feito"></div><div class="dot feito"></div><div class="dot ativo"></div>
+  </div>
+  <div class="card-pergunta" id="card-p5">
+    <span class="numero-pergunta">Pergunta 5 de 5</span>
+    <h2>Quantos dias a gente faz de namoro hoje? 🥰</h2>
+    <p style="font-size:0.85rem;color:#e8c0cc">Não vale I.A hein kkk 😂<br>Conta do dia 15 de fevereiro até hoje</p>
+    <input type="number" id="inp-p5" placeholder="Número de dias..." onkeydown="if(event.key===&#39;Enter&#39;)checarP(5)">
+    <div class="erro" id="erro-p5"></div>
+    <button class="btn" onclick="checarP(5)">Responder</button>
+  </div>
+  <div class="revelacao" id="rev-p5">
+    <!-- FOTO P5 -->
+    <div class="foto-placeholder-rev"><img src="pergunta5.png" style="border-radius: 10px;"></div>
+    <!-- TEXTO P5: preenchido pelo JS -->
+    <div class="texto-historia" id="texto-dias">"86 dias, meu bem. 86 dias que eu aprendo todo dia o que é gostar de alguém de verdade. ❤️"</div>
+    <button class="btn" onclick="irPara(&#39;tela-final&#39;)">Ver a surpresa 🎁</button>
+  </div>
+</div>
+
+<!-- TELA FINAL -->
+<div class="tela" id="tela-final">
+  <div class="emoji-big">🥰</div>
+  <p class="titulo-final">Você acertou tudo, meu bem ❤️</p>
+  <p style="max-width:420px;color:#f0d0da;font-size:0.95rem">Cada pergunta é uma memória que eu guardo com muito carinho...</p>
+  <div class="fileiras-fotos" style="margin:16px 0">
+
+    <div class="fileira fileira-1">
+      <img src="Tela Final/1.png" class="foto-slide">
+      <img src="Tela Final/2.png" class="foto-slide">
+      <img src="Tela Final/3.png" class="foto-slide">
+      <img src="Tela Final/4.png" class="foto-slide">
+      <img src="Tela Final/5.png" class="foto-slide">
+      <!-- Duplicadas para o loop não ter corte -->
+      <img src="Tela Final/1.png" class="foto-slide">
+      <img src="Tela Final/2.png" class="foto-slide">
+      <img src="Tela Final/3.png" class="foto-slide">
+      <img src="Tela Final/4.png" class="foto-slide">
+      <img src="Tela Final/5.png" class="foto-slide">
+    </div>
+
+    <div class="fileira fileira-2">
+      <img src="Tela Final/6.png" class="foto-slide">
+      <img src="Tela Final/7.png" class="foto-slide">
+      <img src="Tela Final/8.png" class="foto-slide">
+      <img src="Tela Final/9.png" class="foto-slide">
+      <img src="Tela Final/10.png" class="foto-slide">
+      <!-- Duplicadas -->
+      <img src="Tela Final/6.png" class="foto-slide">
+      <img src="Tela Final/7.png" class="foto-slide">
+      <img src="Tela Final/8.png" class="foto-slide">
+      <img src="Tela Final/9.png" class="foto-slide">
+      <img src="Tela Final/10.png" class="foto-slide">
+    </div>
+
+    <div class="fileira fileira-3">
+      <img src="Tela Final/11.png" class="foto-slide">
+      <img src="Tela Final/12.png" class="foto-slide">
+      <img src="Tela Final/13.png" class="foto-slide">
+      <img src="Tela Final/14.png" class="foto-slide">
+      <img src="Tela Final/15.png" class="foto-slide">
+      <!-- Duplicadas -->
+      <img src="Tela Final/11.png" class="foto-slide">
+      <img src="Tela Final/12.png" class="foto-slide">
+      <img src="Tela Final/13.png" class="foto-slide">
+      <img src="Tela Final/14.png" class="foto-slide">
+      <img src="Tela Final/15.png" class="foto-slide">
+    </div>
+
+  </div>
+  <button class="btn-carta" onclick="abrirCarta()">💌 Abrir a carta</button>
+</div>
+
+<!-- CARTA MODAL -->
+<div class="carta-overlay" id="carta-overlay">
+  <div class="carta-papel">
+    <button class="carta-fecha" onclick="fecharCarta()">✕</button>
+    <div class="carta-titulo">Para a Lívia, meu bem 💕</div>
+    <div class="carta-corpo">
+      <p>Oi meu bem,</p>
+      <p>Se você chegou até aqui, significa que se lembra tanto quanto eu de cada um dos nossos momentos: dos nossos dias e risadas juntos, das fofocas e das conversas sobre mil assuntos diferentes  e até da minha senha do (sus kkk, mas meu bem, saiba que guardo cada um desses momentos no meu coração. E não só esses, mas também todas as vezes que reservei um domingo da minha vida para te ver, e até aquela quinta (kkk. Cada minuto, cada segundo... Antes mesmo de acabar, eu já sentia saudade da sua presença. Inclusive, estou com MUITA agora! 😢</p>
+      <p>Escrevi tudo isso só para dizer que EU TE AMO MUITO, MEU BEM!
+      Feliz 3 meses para nós! ❤️</p>
+    </div>
+    <div class="carta-assinatura">Com todo o meu amor, ❤️<br><strong>Seu Bem</strong></div>
+  </div>
+</div>
+
+<script>
+// CORAÇÕES
+(function(){
+  var c=document.getElementById('coracoes');
+  var emojis=['❤️','🩷','💕','💗','💓','💖','🤍'];
+  for(var i=0;i<22;i++){
+    (function(i){
+      setTimeout(function(){
+        var el=document.createElement('div');
+        el.className='coracao';
+        el.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+        el.style.left=Math.random()*100+'%';
+        el.style.fontSize=(12+Math.random()*18)+'px';
+        el.style.animationDuration=(8+Math.random()*12)+'s';
+        el.style.animationDelay=(Math.random()*10)+'s';
+        c.appendChild(el);
+        el.addEventListener('animationend',function(){
+          el.style.left=Math.random()*100+'%';
+          el.style.animationDuration=(8+Math.random()*12)+'s';
+          el.style.animationDelay='0s';
+        });
+      },i*200);
+    })(i);
+  }
+})();
+
+// DIAS DE NAMORO
+var inicio=new Date(2026,1,15);
+var hoje=new Date();
+var diasNamoro=Math.floor((hoje-inicio)/(1000*60*60*24));
+document.getElementById('texto-dias').textContent=
+  '"'+diasNamoro+' dias, meu bem. '+diasNamoro+' dias que eu aprendo todo dia o que é gostar de alguém de verdade. ❤️"';
+
+// NAVEGAÇÃO
+function irPara(id){
+  document.querySelectorAll('.tela').forEach(function(t){t.classList.remove('ativa')});
+  document.getElementById(id).classList.add('ativa');
+  window.scrollTo(0,0);
+}
+function toggleDica(id){document.getElementById(id).classList.toggle('visivel')}
+
+// SENHAS
+function checarS1(){
+  var v=document.getElementById('inp-s1').value.trim();
+  var e=document.getElementById('erro-s1');
+  if(v==='353865'){e.textContent='';irPara('tela-senha2');}
+  else{e.textContent='Hmm, não foi dessa vez... tenta de novo kkk';document.getElementById('inp-s1').value='';}
+}
+function checarS2(){
+  var v=document.getElementById('inp-s2').value.trim();
+  var e=document.getElementById('erro-s2');
+  if(v==='1327'){e.textContent='';irPara('tela-parabens-senha');}
+  else{e.textContent='Não foi... essa é sua senha hein kkk 😂';document.getElementById('inp-s2').value='';}
+}
+
+// RESPOSTAS
+var respostas={
+  1:['10 de julho','10/07','julho 10'],
+  2:['bh shopping','bhshopping','bh-shopping','shopping bh'],
+  3:['6'],
+  4:['15 de fevereiro','15/02','fevereiro 15'],
+  5:[String(diasNamoro)]
+};
+var proximaTela={1:'tela-p2',2:'tela-p3',3:'tela-p4',4:'tela-p5',5:'tela-final'};
+
+function checarP(n){
+  var inp=document.getElementById('inp-p'+n);
+  var v=inp.value.trim().toLowerCase();
+  var e=document.getElementById('erro-p'+n);
+  var acertou=respostas[n].some(function(r){return v===r.toLowerCase()});
+  if(acertou){
+    e.textContent='';
+    // Esconde o card e o progresso, mostra a revelação
+    document.getElementById('card-p'+n).style.display='none';
+    document.querySelector('#tela-p'+n+' .progresso').style.display='none';
+    document.getElementById('rev-p'+n).classList.add('visivel');
+    window.scrollTo(0,0);
+  }else{
+    e.textContent='Quase... tenta de novo! 💕';
+    inp.select();
+  }
+}
+function irParaProxima(n){irPara(proximaTela[n]);}
+
+// CARTA
+function abrirCarta(){
+  document.getElementById('carta-overlay').classList.add('visivel');
+  document.body.style.overflow='hidden';
+}
+function fecharCarta(){
+  document.getElementById('carta-overlay').classList.remove('visivel');
+  document.body.style.overflow='';
+}
+document.getElementById('carta-overlay').addEventListener('click',function(e){
+  if(e.target===this)fecharCarta();
+});
+</script>
+
+
+</body></html>
